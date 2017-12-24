@@ -271,6 +271,20 @@ func (api *KrakenApi) Depth(pair string, count int) (*OrderBook, error) {
 	return nil, errors.New("invalid response")
 }
 
+// OHLC returns the OHLC data given pair and interval.
+func (api *KrakenApi) OHLC(pair string, interval int) (*OHLCResponse, error) {
+	or := OHLCResponse{}
+	_, err := api.queryPublic("OHLC", url.Values{
+		"pair": {pair}, "interval": {strconv.Itoa(interval)},
+	}, &or)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &or, nil
+}
+
 // CancelOrder cancels order
 func (api *KrakenApi) CancelOrder(txid string) (*CancelOrderResponse, error) {
 	params := url.Values{}

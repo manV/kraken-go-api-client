@@ -136,3 +136,18 @@ func TestQueryDepth(t *testing.T) {
 		t.Errorf("Bids length must be less than count , got %d > %d", len(result.Bids), count)
 	}
 }
+
+func TestOHLC(t *testing.T) {
+	pair := "BCHEUR"
+	interval := 5
+	result, err := publicAPI.OHLC(pair, interval)
+
+	if err != nil {
+		t.Errorf("OHLC should not return an error, got %s", err)
+	}
+	resultType := reflect.TypeOf(result)
+
+	if resultType != reflect.TypeOf(&OHLCResponse{}) {
+		t.Errorf("Depth should return an OHLCResponse, got %s", resultType)
+	}
+}

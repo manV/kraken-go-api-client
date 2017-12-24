@@ -479,3 +479,121 @@ type CancelOrderResponse struct {
 }
 
 type QueryOrdersResponse map[string]Order
+
+type OHLCItem struct {
+	Ts     int64
+	Open   float64
+	High   float64
+	Low    float64
+	Close  float64
+	Vwap   float64
+	Volume float64
+	Count  int64
+}
+
+// UnmarshalJSON takes a json array from kraken and converts it into an OrderBookItem.
+func (o *OHLCItem) UnmarshalJSON(data []byte) error {
+	tmp_struct := struct {
+		ts     int64
+		open   string
+		high   string
+		low    string
+		close  string
+		vwap   string
+		volume string
+		count  int64
+	}{}
+	tmp_arr := []interface{}{&tmp_struct.ts, &tmp_struct.open, &tmp_struct.high, &tmp_struct.low, &tmp_struct.close, &tmp_struct.vwap, &tmp_struct.volume, &tmp_struct.count}
+	err := json.Unmarshal(data, &tmp_arr)
+	if err != nil {
+		return err
+	}
+
+	o.Open, err = strconv.ParseFloat(tmp_struct.open, 64)
+	if err != nil {
+		return err
+	}
+	o.High, err = strconv.ParseFloat(tmp_struct.high, 64)
+	if err != nil {
+		return err
+	}
+	o.Low, err = strconv.ParseFloat(tmp_struct.low, 64)
+	if err != nil {
+		return err
+	}
+	o.Close, err = strconv.ParseFloat(tmp_struct.close, 64)
+	if err != nil {
+		return err
+	}
+	o.Vwap, err = strconv.ParseFloat(tmp_struct.vwap, 64)
+	if err != nil {
+		return err
+	}
+	o.Volume, err = strconv.ParseFloat(tmp_struct.volume, 64)
+	if err != nil {
+		return err
+	}
+	o.Ts = tmp_struct.ts
+	o.Count = tmp_struct.count
+	return nil
+}
+
+type OHLCResponse struct {
+	BCHEUR   []OHLCItem
+	BCHUSD   []OHLCItem
+	BCHXBT   []OHLCItem
+	DASHEUR  []OHLCItem
+	DASHUSD  []OHLCItem
+	DASHXBT  []OHLCItem
+	EOSETH   []OHLCItem
+	EOSEUR   []OHLCItem
+	EOSUSD   []OHLCItem
+	EOSXBT   []OHLCItem
+	GNOETH   []OHLCItem
+	GNOEUR   []OHLCItem
+	GNOUSD   []OHLCItem
+	GNOXBT   []OHLCItem
+	USDTZUSD []OHLCItem
+	XETCXETH []OHLCItem
+	XETCXXBT []OHLCItem
+	XETCZEUR []OHLCItem
+	XETCXUSD []OHLCItem
+	XETHXXBT []OHLCItem
+	XETHZCAD []OHLCItem
+	XETHZEUR []OHLCItem
+	XETHZGBP []OHLCItem
+	XETHZJPY []OHLCItem
+	XETHZUSD []OHLCItem
+	XICNXETH []OHLCItem
+	XICNXXBT []OHLCItem
+	XLTCXXBT []OHLCItem
+	XLTCZEUR []OHLCItem
+	XLTCZUSD []OHLCItem
+	XMLNXETH []OHLCItem
+	XMLNXXBT []OHLCItem
+	XREPXETH []OHLCItem
+	XREPXXBT []OHLCItem
+	XREPZEUR []OHLCItem
+	XREPZUSD []OHLCItem
+	XXBTZCAD []OHLCItem
+	XXBTZEUR []OHLCItem
+	XXBTZGBP []OHLCItem
+	XXBTZJPY []OHLCItem
+	XXBTZUSD []OHLCItem
+	XXDGXXBT []OHLCItem
+	XXLMXXBT []OHLCItem
+	XXLMZEUR []OHLCItem
+	XXLMZUSD []OHLCItem
+	XXMRXXBT []OHLCItem
+	XXMRZEUR []OHLCItem
+	XXMRZUSD []OHLCItem
+	XXRPXXBT []OHLCItem
+	XXRPZCAD []OHLCItem
+	XXRPZEUR []OHLCItem
+	XXRPZJPY []OHLCItem
+	XXRPZUSD []OHLCItem
+	XZECXXBT []OHLCItem
+	XZECZEUR []OHLCItem
+	XZECZUSD []OHLCItem
+	Last     int64 `json:"last"`
+}
